@@ -1,16 +1,15 @@
 <template>
     <v-container>
-        <div>
-            <v-card
+        <div v-if="piniaValue.isLogged">
+            <v-card                
                 class="mx-auto"
                 max-width="600"
                 variant="outlined"
             >
-                <v-card-title class="text-center">
+                <v-card-title class="text-center my-2">
                     Login
                 </v-card-title>
-                <v-card-text>
-                    <p class="my-3">Faça login pfv</p>
+                <v-card-text>                    
                     <v-form>
                         <v-text-field
                             v-model="username"
@@ -46,7 +45,7 @@
                 </v-card-actions>
             </v-card>     
         </div>
-        <div class="mt-5">
+        <div v-else>
             <v-card
                 class="mx-auto"
                 max-width="600"
@@ -91,7 +90,7 @@
                         color="info"
                         variant="tonal"
                         size="large"
-                        type="submit"
+                        type="submit"                        
                     >Confirmar</v-btn>
                 </v-card-actions>
             </v-card>
@@ -100,6 +99,8 @@
 </template>
 
 <script>   
+import { onMounted } from 'vue'
+import { useDefinitionStore } from '../assets/js/pinia'
     export default {
         data: () => ({
             select: null,
@@ -108,7 +109,23 @@
                 'Almoço',
                 'Saída',
             ]
-        })
+        }),
+
+        setup() {
+            const piniaValue = useDefinitionStore()
+            console.log("Setup")     
+            return { piniaValue }           
+        },
+
+        onMounted(){
+            this.DebugPinia()
+        },
+
+        methods:{
+            DebugPinia(){
+                console.log("Is Logged = " + this.piniaValue.isLogged)
+            }
+        }
     }
 
 </script>

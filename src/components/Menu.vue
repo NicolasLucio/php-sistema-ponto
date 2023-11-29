@@ -7,12 +7,21 @@
             <div>
                 <!-- Trocar se estiver logado -->
                 <v-list>
-                    <v-list-item
-                        prepend-icon="mdi-home"
-                        title="Home"
-                        to="/home"
-                    >
-                    </v-list-item>
+                    <div v-if="piniaValue.isLogged">
+                        <v-list-item                        
+                            prepend-icon="mdi-home-account"
+                            :title="piniaValue.loggedUsername"
+                            to="/home"
+                        ></v-list-item>
+                    </div>
+                    <div v-else>
+                        <v-list-item                        
+                            prepend-icon="mdi-home"
+                            title="Home"
+                            to="/home"
+                        >
+                        </v-list-item>
+                    </div>                    
                 </v-list>
             </div>                
         </template>
@@ -28,6 +37,7 @@
             >
             </v-list-item>
             <v-list-item
+                    v-if="piniaValue.isLogged && piniaValue.isAdmin"
                     prepend-icon="mdi-security"
                     title="Painel Admin"
                     to="/adm"
@@ -37,12 +47,16 @@
 
         <template v-slot:append>
             <!-- Esconder se não estiver logado -->
-            <div class="px-5">
+            <div 
+                v-if="piniaValue.isLogged"
+                class="px-5"
+            >
                 <v-btn
                     class="mb-2"                
                     color="red"
                     size="small"    
-                    block            
+                    block
+                    @click="changeLogged(false)"
                 >Logout</v-btn>
             </div>
             <div class="pa-2">
@@ -56,5 +70,18 @@
 
 <script>
     import { reactive, onMounted } from 'vue';
+    import pinia, { useDefinitionStore } from '../assets/js/pinia';
 
+    export default{
+        setup() {
+            const piniaValue = useDefinitionStore()
+            console.log("isLogged = " + JSON.stringify(piniaValue.isLogged))
+            return { piniaValue }
+        },
+        methods: {
+            changeLogged(to){
+                this.piniaValue.isLogged = to
+            }
+        }
+    }   
 </script>

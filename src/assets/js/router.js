@@ -7,17 +7,17 @@ const routes = [
     {
         path: '/',
         component: HomePage,
-        alias: ['/home']
+        alias: ['/home'],        
     },
     {
         path: '/admin',
         component: AdminPage,
-        alias: ['/adm']
+        alias: ['/adm'],        
     },
     {
         path: '/history',
-        component: HistoryPage,
-        alias: ['/list']
+        component: HistoryPage,        
+        alias: ['/list'],        
     }
 ]
 

@@ -15,12 +15,20 @@
                         outline
                         label="Username"
                         type="text"
-                    >
+                        hint="Dado que será usado para o login do usuário"
+                    >                    
                     </v-text-field>
+                    <v-text-field
+                        outline
+                        label="Nome"
+                        type="text"     
+                        hint="Nome que aparecerá no ponto"
+                    ></v-text-field>
                     <v-text-field                        
                         outline
                         label="Password"
                         type="password"
+                        hint="Senha do usuário"
                     >
                     </v-text-field>
                 </v-form>                
@@ -58,10 +66,10 @@
                             ID
                         </th>
                         <th>
-                            Nome
+                            Username
                         </th>
                         <th>
-                            Outra info
+                            Nome
                         </th>
                     </tr>
                 </thead>
@@ -71,10 +79,10 @@
                             07
                         </td>
                         <td>
-                            Carlinho
+                            carlimmmm
                         </td>
                         <td>
-                            Homem
+                            Carlos dos Campos
                         </td>
                     </tr>
                 </tbody>
