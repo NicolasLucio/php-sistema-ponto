@@ -1,5 +1,8 @@
 <template>
-    <v-card>
+    <v-card
+        class="mx-auto"
+        max-width="700"
+    >
         <v-card-title class="text-center">
             Historico
         </v-card-title>
