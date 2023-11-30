@@ -10,7 +10,7 @@
                     Login
                 </v-card-title>
                 <v-card-text>                    
-                    <v-form>
+                    <v-form id="loginForm" name="loginForm" @submit="loginSubmit">
                         <v-text-field
                             v-model="username"
                             outline
@@ -41,6 +41,7 @@
                         variant="tonal"
                         size="large"
                         type="submit"
+                        form="loginForm"
                     >Login</v-btn>
                 </v-card-actions>
             </v-card>     
@@ -103,6 +104,9 @@ import { onMounted } from 'vue'
 import { useDefinitionStore } from '../assets/js/pinia'
     export default {
         data: () => ({
+            username: "",
+            password: "",
+            isAdmin: 0,
             select: null,
             items: [
                 'Entrada',
@@ -115,15 +119,32 @@ import { useDefinitionStore } from '../assets/js/pinia'
             const piniaValue = useDefinitionStore()
             console.log("Setup")     
             return { piniaValue }           
-        },
-
-        onMounted(){
-            this.DebugPinia()
-        },
+        },        
 
         methods:{
-            DebugPinia(){
-                console.log("Is Logged = " + this.piniaValue.isLogged)
+            loginSubmit(event){
+                event.preventDefault()
+                this.axios.post('http://localhost:8080/login.php', {
+                    username:this.username,
+                    senha:this.password
+                }).then((response) => {
+                    console.log("respost braba = " + response.data.username)
+                    this.username = response.data.username;
+                    this.isAdmin = response.data.isAdmin;
+                    this.loginSuccess();
+                })                
+            },
+            loginSuccess(){
+                this.piniaValue.loggedUsername = this.username;
+                this.piniaValue.isLogged = true;
+                if (this.isAdmin == 0)
+                {
+                    this.piniaValue.isAdmin = false;
+                }
+                else
+                {
+                    this.piniaValue.isAdmin = true;
+                }                
             }
         }
     }

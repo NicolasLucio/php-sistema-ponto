@@ -8,7 +8,7 @@ export const useDefinitionStore = defineStore('config' , {
             menu: true,
             isAdmin: false ,
             isLogged: false,
-            loggedUsername: "Pedro Pedroso"
+            loggedUsername: ""
         }
     )
 })
