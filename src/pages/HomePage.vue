@@ -1,6 +1,6 @@
 <template>
     <v-container>
-        <div v-if="piniaValue.isLogged">
+        <div v-if="!piniaValue.isLogged">
             <v-card                
                 class="mx-auto"
                 max-width="600"

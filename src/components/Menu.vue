@@ -74,8 +74,7 @@
 
     export default{
         setup() {
-            const piniaValue = useDefinitionStore()
-            console.log("isLogged = " + JSON.stringify(piniaValue.isLogged))
+            const piniaValue = useDefinitionStore()            
             return { piniaValue }
         },
         methods: {

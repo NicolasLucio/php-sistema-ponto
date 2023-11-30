@@ -6,8 +6,8 @@ export const useDefinitionStore = defineStore('config' , {
     state: () => (
         { 
             menu: true,
-            isAdmin: true ,
-            isLogged: true,
+            isAdmin: false ,
+            isLogged: false,
             loggedUsername: "Pedro Pedroso"
         }
     )
