@@ -56,7 +56,7 @@
                     Ultimo Ponto
                 </v-card-title>
                 <v-card-text class="text-center">
-                    Horário do Ultimo Ponto do Usuário
+                    {{ piniaValue.lastPointMessage }}
                 </v-card-text>
             </v-card>
             <v-card
@@ -66,19 +66,7 @@
             >
                 <v-card-title class="text-center">
                     Novo ponto
-                </v-card-title>
-                <v-card-text class="mt-2">                    
-                    <v-form>
-                        <v-select
-                            v-model="select"
-                            :items="items"
-                            :rules="[v => !!v || 'É necessário selecionar um item']"                            
-                            label="Tipo do Ponto"
-                            required
-                        >
-                        </v-select>
-                    </v-form>
-                </v-card-text>
+                </v-card-title>                
                 <v-divider></v-divider>
                 <v-card-actions class="mt-2">                    
                     <v-btn
@@ -91,7 +79,7 @@
                         color="info"
                         variant="tonal"
                         size="large"
-                        type="submit"                        
+                        @click="markPointButton()"                  
                     >Confirmar</v-btn>
                 </v-card-actions>
             </v-card>
@@ -106,13 +94,8 @@ import { useDefinitionStore } from '../assets/js/pinia'
         data: () => ({
             username: "",
             password: "",
-            isAdmin: 0,
-            select: null,
-            items: [
-                'Entrada',
-                'Almoço',
-                'Saída',
-            ]
+            userID: "",
+            isAdmin: 0                      
         }),
 
         setup() {
@@ -128,15 +111,17 @@ import { useDefinitionStore } from '../assets/js/pinia'
                     username:this.username,
                     senha:this.password
                 }).then((response) => {
-                    console.log("respost braba = " + response.data.username)
+                    console.log("Reposta Login = " + response.data.username)
                     this.username = response.data.username;
                     this.isAdmin = response.data.isAdmin;
-                    this.loginSuccess();
+                    this.userID = response.data.userID;
+                    this.loginSuccess(response.data.userID);
                 })                
             },
-            loginSuccess(){
+            loginSuccess(userID){
                 this.piniaValue.loggedUsername = this.username;
                 this.piniaValue.isLogged = true;
+                this.piniaValue.loggedUserID = userID;
                 if (this.isAdmin == 0)
                 {
                     this.piniaValue.isAdmin = false;
@@ -145,7 +130,21 @@ import { useDefinitionStore } from '../assets/js/pinia'
                 {
                     this.piniaValue.isAdmin = true;
                 }                
-            }
+            },
+            markPointButton(){                
+                if (this.piniaValue.isLogged){
+                    this.axios.post('http://localhost:8080/add.php', {
+                        userID:this.piniaValue.loggedUserID
+                    }).then((response) => {
+                        console.log("Reposta Add = " + response.data.message)
+                        this.piniaValue.lastPointMessage = JSON.stringify(response.data.lastPoint);
+                        this.markPointSuccess();
+                    })                
+                }
+            },
+            markPointSuccess(){
+                //modal?
+            }            
         }
     }
 

@@ -8,7 +8,9 @@ export const useDefinitionStore = defineStore('config' , {
             menu: true,
             isAdmin: false ,
             isLogged: false,
-            loggedUsername: ""
+            loggedUsername: "",
+            loggedUserID: "",
+            lastPointMessage: "Horario do Ultimo Ponto Cadastrado"
         }
     )
 })
