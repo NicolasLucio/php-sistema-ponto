@@ -11,30 +11,27 @@ use Backend\Connect;
 $main = new Main();
 $connect = new Connect();
 
-if ($_SERVER["REQUEST_METHOD"] == "POST"){
+if ($_SERVER["REQUEST_METHOD"] == "POST")
+{
     try
     {
         $data = file_get_contents("php://input");
         $data = json_decode($data);
-        if (empty($data->username) || empty($data->senha)){            
-            http_response_code(422);
-            throw new Exception("Erro", 422);
-        }
-        if ($user = $connect->login($data->username, $data->senha))
-        {   
+
+        if ($resultList = $connect->history($data))
+        {           
             echo json_encode(array(
-                "message"=>"Usuário Conectado",
-                "username"=>$user->nome,
-                "isAdmin"=>$user->admin,
-                "userID"=>$user->id           
+                "message"=>"Historico Acessado com Sucesso",
+                "listHistory"=>$resultList
             ));
             die;
-        }         
+        }
     }
     catch (Exception $e)
-    {        
+    {
         echo json_encode(array(
             "message"=>$e->getMessage()
         ));    
     }
 }
+

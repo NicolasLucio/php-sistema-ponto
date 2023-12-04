@@ -94,4 +94,87 @@ class Connect{
             var_dump("User not Found");
         }
     }
+
+    public function history($dataUserID)
+    {
+        $localUserID = $dataUserID->userID;
+        $queryCheck = "SELECT data, hora, minuto FROM pontos WHERE userID = '$localUserID' ORDER BY id DESC LIMIT 10;";
+        $queryResult = $this->conn->prepare($queryCheck);
+        $queryResult->execute();
+        $resultQuery = $queryResult->fetchAll(PDO::FETCH_ASSOC);
+        
+        return $resultQuery;
+    }
+
+    public function adminList()
+    {
+        $queryCheck = "SELECT id, nome, username FROM usuarios";
+        $queryResult = $this->conn->prepare($queryCheck);
+        $queryResult->execute();
+        $resultQuery = $queryResult->fetchAll(PDO::FETCH_ASSOC);
+
+        return $resultQuery;
+    }
+
+    public function adminCreate($userData)
+    {
+        $query = "SELECT id FROM usuarios WHERE username = '$userData->username';";
+
+        $result = $this->conn->prepare($query);
+
+        if ($result->execute())
+        {
+            $user = $result->fetchObject();
+            if ($user)
+            {
+                throw new Exception("Username já em uso");
+            }
+            else
+            {                
+                if ($userData->checkbox)
+                {
+                    $localAdmin = 1;
+                }
+                else
+                {
+                    $localAdmin = 0;
+                }
+
+                $userData->checkbox = $localAdmin;
+                
+                //$userData->nome = filter_input(INPUT_POST, "nome", FILTER_DEFAULT);
+                //$userData->username = filter_input(INPUT_POST, "username", FILTER_DEFAULT);
+                //$userData->password = filter_input(INPUT_POST, "password", FILTER_DEFAULT);                
+                
+                $error = [];
+        
+                if (is_null($userData->nome) || strlen($userData->nome) <1)
+                {
+                    $erro[] = "Campo Nome Inválido";
+                }
+                if (is_null($userData->username) || strlen($userData->username) < 1)
+                {
+                    $error[] = "Campo Username Inválido";
+                }
+        
+                if (is_null($userData->password) || strlen($userData->password) < 1)
+                {
+                    $error[] = "Campo Senha Inválido";
+                }
+        
+                if ($erro != null)
+                {
+                    if (count($erro) > 0)
+                    {
+                        throw new Exception($erro);
+                        return false;
+                    }
+                }                
+                else
+                {
+                    return $userData;
+                }  
+            }
+        }
+    }   
 }

@@ -31,6 +31,7 @@
         <!-- Esconder de não for Admin -->
         <v-list nav>
             <v-list-item
+                v-if="piniaValue.isLogged"
                 prepend-icon="mdi-view-list"
                 title="Historico"
                 to="/list"
@@ -56,7 +57,7 @@
                     color="red"
                     size="small"    
                     block
-                    @click="changeLogged(false)"
+                    @click="dialogLogoff = true"
                 >Logout</v-btn>
             </div>
             <div class="pa-2">
@@ -65,14 +66,50 @@
                 </p>
             </div>
         </template>
-    </v-navigation-drawer>        
+    </v-navigation-drawer>
+    <v-dialog
+        v-model="dialogLogoff"
+        persistent
+        width="auto"
+    >
+        <v-card>
+            <v-card-title class="text-h5 text-center">
+                LOGOUT
+            </v-card-title>
+                <v-card-text>
+                    Tem certeza que quer se desconectar do sistema?
+                </v-card-text>
+            <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn
+                    color="green-darken-1"
+                    variant="text"
+                    @click="dialogLogoff = false"
+                >
+                    Não
+                </v-btn>
+                <v-btn
+                    color="blue-darken-1"
+                    variant="text"
+                    @click="changeLogged(false)"
+                >
+                    Sim
+                </v-btn>
+            </v-card-actions>
+        </v-card>
+    </v-dialog>
 </template>
 
 <script>
     import { reactive, onMounted } from 'vue';
     import pinia, { useDefinitionStore } from '../assets/js/pinia';
 
-    export default{
+    export default {
+        data () {
+            return {
+                dialogLogoff: false,
+            }
+        },
         setup() {
             const piniaValue = useDefinitionStore()            
             return { piniaValue }
@@ -80,6 +117,7 @@
         methods: {
             changeLogged(to){
                 this.piniaValue.isLogged = to
+                this.dialogLogoff = false
             }
         }
     }   

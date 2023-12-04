@@ -10,27 +10,37 @@
             </v-card-title>
             <v-card-text>
                 <p class="my-3 text-center">Cadastrar um novo usuário</p>
-                <v-form>
-                    <v-text-field                        
+                <v-form id="createForm" name="createForm" @submit="createSubmit">
+                    <v-text-field
+                        v-model="username"
                         outline
                         label="Username"
                         type="text"
                         hint="Dado que será usado para o login do usuário"
+                        required
                     >                    
                     </v-text-field>
                     <v-text-field
+                        v-model="nome"
                         outline
                         label="Nome"
                         type="text"     
                         hint="Nome que aparecerá no ponto"
+                        required
                     ></v-text-field>
                     <v-text-field                        
+                        v-model="password"
                         outline
                         label="Password"
                         type="password"
                         hint="Senha do usuário"
+                        required
                     >
                     </v-text-field>
+                    <v-checkbox
+                        v-model="checkbox"                        
+                        label="Fornecer Adminstrador?"                        
+                    ></v-checkbox>
                 </v-form>                
             </v-card-text>
             <v-divider></v-divider>
@@ -42,6 +52,7 @@
                     variant="tonal"
                     size="large"
                     type="submit"
+                    form="createForm"
                 >
                     Cadastrar
                 </v-btn>
@@ -74,15 +85,18 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
+                    <tr
+                        v-for="item in objectUsers"
+                        :key="item.id"
+                    >
                         <td>
-                            07
+                            {{ item.id }}
                         </td>
                         <td>
-                            carlimmmm
+                            {{ item.username }}
                         </td>
                         <td>
-                            Carlos dos Campos
+                            {{ item.nome }}
                         </td>
                     </tr>
                 </tbody>
@@ -90,3 +104,57 @@
         </v-card-text>
     </v-card>
 </template>
+
+<script>
+    import { useDefinitionStore } from '../assets/js/pinia'
+
+    export default{
+        data: () => ({
+            objectUsers: null,
+            username: "",
+            nome: "",
+            password: "",
+            checkbox: false
+        }),
+
+        setup() 
+        {
+            const piniaValue = useDefinitionStore()
+            if (!piniaValue.isLogged && !piniaValue.isAdmin)
+            {
+                document.location.href = '/home'
+                return null
+            }
+            else
+            {
+                return { piniaValue }
+            }    
+        },
+
+        created(){
+            this.refreshUserList();
+        },
+
+        methods:{
+            refreshUserList(){
+                this.axios.post('http://localhost:8080/adminlist.php', {}).then((response) => {
+                    console.log("Resposta Admin Page = " + response.data.message)
+                    this.objectUsers = response.data.listUsers
+                })
+            },
+            createSubmit(event){
+                event.preventDefault()
+                this.axios.post('http://localhost:8080/admincreate.php', {
+                    username:this.username,
+                    nome:this.nome,
+                    password:this.password,
+                    checkbox:this.checkbox            
+                }).then((response) => {
+                    console.log("Resposta Add Admin = " + response.data.message)
+                    this.refreshUserList()
+                })
+            }
+        }
+    }
+
+</script>
