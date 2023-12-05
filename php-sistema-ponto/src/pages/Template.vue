@@ -15,8 +15,7 @@
         components: {
             Menu
         }
-    }
-    
+    }    
 </script>
 
 <style scoped>

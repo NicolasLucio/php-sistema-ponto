@@ -21,7 +21,7 @@ class Connect{
         }
         catch(Exception $e)
         {
-            var_dump($e->getMessage());
+            throw new Exception($e->getMessage());
         }
     }
 
@@ -65,7 +65,7 @@ class Connect{
             $quantityResult->execute();
             $result = $quantityResult->fetchAll(PDO::FETCH_ASSOC);      
 
-            if (count($result) <= 4)
+            if (count($result) <= 3)
             {                
                 $actualTimeHour = date('H');
                 $actualTimeMinute = date('i');
@@ -79,19 +79,18 @@ class Connect{
                 }
                 catch(Exception $e)
                 {
-                    var_dump($e->getMessage());
+                    throw new Exception($e->getMessage());
                 }   
             }
             else
             {
-                var_dump("Quantidade = " . count($result));
-                return false;
-                // Muito Usuario
+                throw new Exception("Quantidade = " . count($result));
+                return false;                
             }                     
         }
         else
         {
-            var_dump("User not Found");
+            throw new Exception("Usuario não Encontrado");
         }
     }
 

@@ -37,7 +37,7 @@
                         :key="item.data"
                     >
                         <td>
-                            {{  item.data }}
+                            {{ item.data }}
                         </td>
                         <td>
                             {{ item.hora }}:{{ item.minuto }}
@@ -82,9 +82,7 @@
                     console.log("Reposta History = " + response.data.message)
                     this.objectHistory = response.data.listHistory                                 
                 }) 
-
             }
         }
     }
-
 </script>

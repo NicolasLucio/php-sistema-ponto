@@ -1,10 +1,11 @@
 <template>     
     <v-navigation-drawer    
         permanent        
-        location="left"
+        :location="(data.width > 600) ? 'left' : 'right'"
+        :rail="menuRail"
     >
         <template v-slot:prepend>
-            <div>
+            <div v-resize="onResize">
                 <!-- Trocar se estiver logado -->
                 <v-list>
                     <div v-if="piniaValue.isLogged">
@@ -50,19 +51,37 @@
             <!-- Esconder se não estiver logado -->
             <div 
                 v-if="piniaValue.isLogged"
-                class="px-5"
+                :class="(!menuRail) ? 'px-5' : ''"
             >
                 <v-btn
+                    v-if="!menuRail"
                     class="mb-2"                
                     color="red"
                     size="small"    
                     block
                     @click="dialogLogoff = true"
                 >Logout</v-btn>
+                <v-btn
+                    v-else                    
+                    color="red mx-2"
+                    size="small"                        
+                    icon="mdi-logout"
+                    @click="dialogLogoff = true"
+                ></v-btn>
             </div>
+            <v-divider></v-divider>
             <div class="pa-2">
-                <p class="ext-disabled text-center text-subtitle-2">
+                <p 
+                    v-if="!menuRail"
+                    class="ext-disabled text-center text-subtitle-2"
+                >
                     Empresa X - 2023
+                </p>
+                <p
+                    v-else
+                    class="ext-disabled text-center text-subtitle-2"
+                >
+                    2023
                 </p>
             </div>
         </template>
@@ -108,17 +127,37 @@
         data () {
             return {
                 dialogLogoff: false,
+                menuRail: false,
+                data: reactive({
+                    widht: 0,
+                    height: 0
+                })
             }
         },
         setup() {
-            const piniaValue = useDefinitionStore()            
+            const piniaValue = useDefinitionStore()    
             return { piniaValue }
+        },
+
+        mounted(){
+            this.onResize()            
         },
         methods: {
             changeLogged(to){
                 this.piniaValue.isLogged = to
                 this.dialogLogoff = false
-            }
+            },
+            onResize(){
+                this.data.width = window.innerWidth
+                if (this.data.width > 600)
+                {
+                    this.menuRail = false;
+                }
+                else
+                {
+                    this.menuRail = true;
+                }
+            }            
         }
     }   
 </script>

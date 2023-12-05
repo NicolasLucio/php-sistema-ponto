@@ -71,7 +71,8 @@
                 <v-card-actions class="mt-2">                    
                     <v-btn
                         color="warning"
-                        icon="mdi-help"
+                        icon="mdi-help"                        
+                        @click="dialogHelp = true"
                     ></v-btn>
                     <v-spacer></v-spacer>
                     <v-btn
@@ -85,24 +86,66 @@
             </v-card>
         </div>        
     </v-container>
+
+    <!-- Dialog - Aviso de Ponto -->
+    <v-dialog
+        v-model="dialogNewPoint"
+        persistent
+        :scrim="false"
+        width="auto"
+    >
+        <v-card :color="colorCode">
+            <v-card-text>
+                {{ dialogMessage }}
+                <v-progress-linear
+                    indeterminate
+                    color="white"
+                    class="mb-1"
+                ></v-progress-linear>
+            </v-card-text>            
+        </v-card>
+    </v-dialog>
+
+    <!-- Dialog - Botao de Ajuda-->
+    <v-dialog
+        v-model="dialogHelp"
+        :scrim="false"
+        max-width="500"  
+    >
+        <v-card color="info">
+            <v-card-text>Informações sobre o Sistema</v-card-text>       
+        </v-card>
+    </v-dialog>
 </template>
 
 <script>   
-import { onMounted } from 'vue'
-import { useDefinitionStore } from '../assets/js/pinia'
+    import { onMounted } from 'vue'
+    import { useDefinitionStore } from '../assets/js/pinia'
+
     export default {
         data: () => ({
             username: "",
             password: "",
             userID: "",
-            isAdmin: 0                      
+            isAdmin: 0,
+            dialogNewPoint: false,
+            dialogMessage: "",
+            dialogHelp: false,
+            colorCode: "primary"          
         }),
 
         setup() {
             const piniaValue = useDefinitionStore()
             console.log("Setup")     
             return { piniaValue }           
-        },        
+        },
+        
+        watch: {
+            dialogNewPoint (val){
+                if (!val) return
+                setTimeout(() => (this.dialogNewPoint = false), 2000)
+            },
+        },
 
         methods:{
             loginSubmit(event){
@@ -136,16 +179,34 @@ import { useDefinitionStore } from '../assets/js/pinia'
                     this.axios.post('http://localhost:8080/add.php', {
                         userID:this.piniaValue.loggedUserID
                     }).then((response) => {
-                        console.log("Reposta Add = " + response.data.message)
-                        this.piniaValue.lastPointMessage = JSON.stringify(response.data.lastPoint);
-                        this.markPointSuccess();
+                        console.log("Reposta Add = " + response.data.message)                        
+                        if (response.data.lastPoint == null)
+                        {
+                            this.markPointSuccess(false);
+                        }
+                        else
+                        {
+                            this.piniaValue.lastPointMessage = JSON.stringify(response.data.lastPoint);
+                            this.markPointSuccess(true);
+                        }
+                        
                     })                
                 }
             },
-            markPointSuccess(){
-                //modal?
+            markPointSuccess(withSuccess)
+            {
+                if (withSuccess)
+                {
+                    this.colorCode = "primary";
+                    this.dialogMessage = "Ponto Marcado";
+                }
+                else
+                {
+                    this.colorCode = "error";
+                    this.dialogMessage = "Limite Diário Atingido";                    
+                }
+                this.dialogNewPoint = true;
             }            
         }
     }
-
 </script>
