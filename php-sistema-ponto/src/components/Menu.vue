@@ -146,6 +146,10 @@
             changeLogged(to){
                 this.piniaValue.isLogged = to
                 this.dialogLogoff = false
+                if (!to)
+                {
+                    document.location.href = '/home'
+                }
             },
             onResize(){
                 this.data.width = window.innerWidth

@@ -143,7 +143,7 @@ class Connect{
                 
                 //$userData->nome = filter_input(INPUT_POST, "nome", FILTER_DEFAULT);
                 //$userData->username = filter_input(INPUT_POST, "username", FILTER_DEFAULT);
-                //$userData->password = filter_input(INPUT_POST, "password", FILTER_DEFAULT);                
+                //$userData->password = filter_input(INPUT_POST, "password", FILTER_DEFAULT);            
                 
                 $error = [];
         
@@ -165,7 +165,7 @@ class Connect{
                 {
                     if (count($erro) > 0)
                     {
-                        throw new Exception($erro);
+                        throw new Exception(implode(" - ", $erro));
                         return false;
                     }
                 }                
