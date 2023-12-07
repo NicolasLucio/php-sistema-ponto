@@ -5,10 +5,8 @@ header("Access-Control-Allow-Headers: *");
 
 require_once __DIR__ . "/vendor/autoload.php";
 
-use Backend\Main;
 use Backend\Connect;
 
-$main = new Main();
 $connect = new Connect();
 
 if ($_SERVER["REQUEST_METHOD"] == "POST"){

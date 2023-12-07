@@ -118,8 +118,7 @@
     </v-dialog>
 </template>
 
-<script>   
-    import { onMounted } from 'vue'
+<script>  
     import { useDefinitionStore } from '../assets/js/pinia'
 
     export default {
