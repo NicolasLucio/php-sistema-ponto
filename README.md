@@ -28,12 +28,13 @@ Senha: admin
 
 Segue uma breve lista das ferramentas usadas para a conclusão desse projeto.
 
-- Vue
-- Vuetify
-- MDI (Material Design Icons)
+- Vue [(Link)](https://vuejs.org/)
+- Vuetify [(Link)](https://vuetifyjs.com)
+- AXIOS [(Link)](https://axios-http.com/)
+- MDI (Material Design Icons) [(Link)]()
 - PHP
 - Composer
-- DBeaver
+- DBeaver [(Link)](https://dbeaver.io/)
 - SQLite
 
 ## Configuração de IDE recomendada (template)
