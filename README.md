@@ -14,6 +14,8 @@ O projeto tem duas pastas, a que corresponde ao Frontend, e outra que correspond
 
 Sendo assim, é <b>obrigatório</b> para esse exemplo, que o Backend seja rodado separatemente, requisitando essa mesma URL, para ser feito a conexão.
 
+<i>Lembrando que o comando "./" pode ser alterado dependendo da configuração que preferir em seu diretório. Ex: "./php-sistema-ponto-backend"</i>
+
 ```
 php -S 0.0.0.0:8080 -t ./
 ```
