@@ -33,7 +33,7 @@ Segue uma breve lista das ferramentas usadas para a conclusão desse projeto.
 - Vue [(Link)](https://vuejs.org/)
 - Vuetify [(Link)](https://vuetifyjs.com)
 - AXIOS [(Link)](https://axios-http.com/)
-- MDI (Material Design Icons) [(Link)]()
+- MDI (Material Design Icons) [(Link)](https://pictogrammers.com/library/mdi/)
 - PHP
 - Composer
 - DBeaver [(Link)](https://dbeaver.io/)
