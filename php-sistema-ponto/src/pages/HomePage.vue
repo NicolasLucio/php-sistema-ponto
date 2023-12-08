@@ -113,7 +113,26 @@
         max-width="500"  
     >
         <v-card color="info">
-            <v-card-text>Informações sobre o Sistema</v-card-text>       
+            <v-card-title class="text-center">Informações sobre o Sistema</v-card-title>
+            <v-card-text class="text-center">O sistema só aceitará 4 "Novos Pontos" por dia</v-card-text>
+        </v-card>
+    </v-dialog>
+
+    <v-dialog
+        v-model="dialogLoginError"
+        persistent
+        :scrim="false"
+        width="auto"
+    >
+        <v-card color="error">
+            <v-card-text>
+                {{ errorMessage }}
+                <v-progress-linear
+                    indeterminate
+                    color="white"
+                    class="mb-1"
+                ></v-progress-linear>
+            </v-card-text>
         </v-card>
     </v-dialog>
 </template>
@@ -130,7 +149,9 @@
             dialogNewPoint: false,
             dialogMessage: "",
             dialogHelp: false,
-            colorCode: "primary"          
+            colorCode: "primary",
+            dialogLoginError: false,
+            errorMessage: "",    
         }),
 
         setup() {
@@ -144,6 +165,10 @@
                 if (!val) return
                 setTimeout(() => (this.dialogNewPoint = false), 2000)
             },
+            dialogLoginError (val){
+                if(!val) return
+                setTimeout(() => {this.dialogLoginError = false}, 2000);
+            }
         },
 
         methods:{
@@ -153,11 +178,19 @@
                     username:this.username,
                     senha:this.password
                 }).then((response) => {
-                    console.log("Reposta Login = " + response.data.username)
-                    this.username = response.data.username;
-                    this.isAdmin = response.data.isAdmin;
-                    this.userID = response.data.userID;
-                    this.loginSuccess(response.data.userID);
+                    console.log("Reposta Login = " + response.data.message)                    
+                    if (response.data.username)
+                    {                    
+                        this.username = response.data.username;
+                        this.isAdmin = response.data.isAdmin;
+                        this.userID = response.data.userID;
+                        this.loginSuccess(response.data.userID);
+                    }
+                    else
+                    {
+                        this.dialogLoginError = true;
+                        this.errorMessage = response.data.message;
+                    }                
                 })                
             },
             loginSuccess(userID){
@@ -187,8 +220,7 @@
                         {
                             this.piniaValue.lastPointMessage = JSON.stringify(response.data.lastPoint);
                             this.markPointSuccess(true);
-                        }
-                        
+                        }                        
                     })                
                 }
             },

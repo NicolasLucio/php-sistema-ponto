@@ -119,8 +119,8 @@
 </template>
 
 <script>
-    import { reactive, onMounted } from 'vue';
-    import pinia, { useDefinitionStore } from '../assets/js/pinia';
+    import { reactive } from 'vue';
+    import { useDefinitionStore } from '../assets/js/pinia';
 
     export default {
         data () {
