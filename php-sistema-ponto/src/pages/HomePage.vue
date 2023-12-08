@@ -185,13 +185,12 @@
                         this.isAdmin = response.data.isAdmin;
                         this.userID = response.data.userID;
                         this.loginSuccess(response.data.userID);
-                    }
-                    else
-                    {
-                        this.dialogLoginError = true;
-                        this.errorMessage = response.data.message;
-                    }                
-                })                
+                    }                                  
+                }).catch((error) => {
+                    console.log(error.response.status);                    
+                    this.dialogLoginError = true;
+                    this.errorMessage = error.response.data.message;
+                })
             },
             loginSuccess(userID){
                 this.piniaValue.loggedUsername = this.username;
@@ -221,7 +220,7 @@
                             this.piniaValue.lastPointMessage = JSON.stringify(response.data.lastPoint);
                             this.markPointSuccess(true);
                         }                        
-                    })                
+                    })           
                 }
             },
             markPointSuccess(withSuccess)
@@ -237,7 +236,7 @@
                     this.dialogMessage = "Limite Diário Atingido";                    
                 }
                 this.dialogNewPoint = true;
-            }            
+            },         
         }
     }
 </script>

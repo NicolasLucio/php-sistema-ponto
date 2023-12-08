@@ -15,8 +15,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
         $data = file_get_contents("php://input");
         $data = json_decode($data);
         if (empty($data->username) || empty($data->senha)){            
-            //http_response_code(422);
-            throw new Exception("Campos Vazios", 422);
+            http_response_code(422);
+            throw new Exception("Campos Vazios", 422);            
         }
         if ($user = $connect->login($data->username, $data->senha))
         {   

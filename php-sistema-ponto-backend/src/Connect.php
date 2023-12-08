@@ -40,8 +40,8 @@ class Connect{
             }
             else
             {
-                //http_response_code(403);
-                throw new Exception("Usuário não encontrado");
+                http_response_code(403);
+                throw new Exception("Senha e/ou Usuário Incorreto");
             }   
         }        
         return false;
