@@ -101,15 +101,14 @@
             <v-card-actions>
                 <v-spacer></v-spacer>
                 <v-btn
-                    color="green-darken-1"
-                    variant="text"
+                    color="red"                    
                     @click="dialogLogoff = false"
                 >
                     Não
                 </v-btn>
                 <v-btn
                     color="blue-darken-1"
-                    variant="text"
+                    variant="outlined"
                     @click="changeLogged(false)"
                 >
                     Sim
