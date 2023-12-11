@@ -65,3 +65,15 @@ npm run dev
 npm run build
 ```
 
+## Imagens de Exemplo
+
+#### Imagem antes do Login
+![image01](/doc/img01.jpg "Image 01")
+
+#### Imagem depois do Login
+
+![image02](/doc/img02.jpg "Image 02")
+
+#### Exemplo da Responsividade Mobile
+
+![mobile](/doc/img03.jpg "Mobile")
