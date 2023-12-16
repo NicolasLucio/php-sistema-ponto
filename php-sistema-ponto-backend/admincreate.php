@@ -22,7 +22,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
             throw new Exception("Erro", 422);
         }
 
-        if ($result = $connect->adminCreate($data))
+        if ($result = $connect->adminCreate($data, true))
         {
             $resultNome = $result->nome;
             $resultUsername = $result->username;

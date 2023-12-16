@@ -115,7 +115,7 @@ class Connect{
         return $resultQuery;
     }
 
-    public function adminCreate($userData)
+    public function adminCreate($userData, $create)
     {
         $query = "SELECT id FROM usuarios WHERE username = '$userData->username';";
 
@@ -123,8 +123,8 @@ class Connect{
 
         if ($result->execute())
         {
-            $user = $result->fetchObject();
-            if ($user)
+            $user = $result->fetchObject();           
+            if ($user && $create)
             {
                 throw new Exception("Username já em uso");
             }
@@ -171,9 +171,51 @@ class Connect{
                 }                
                 else
                 {
-                    return $userData;
+                    if ($create)
+                    {
+                        return $userData;
+                    }   
+                    else        
+                    {                        
+                        $queryEdit = "UPDATE usuarios SET nome='$userData->nome', senha='$userData->password', username='$userData->username', admin=$userData->checkbox WHERE id=$user->id";
+
+                        try 
+                        {
+                            $this->conn->exec($queryEdit);
+                            return true;
+                        }
+                        catch (Exception $e)
+                        {
+                            throw new Exception($e->getMessage());
+                        }
+                    }         
                 }  
             }
         }
-    }   
+    }  
+
+    public function del($userData)
+    {
+        $query = "DELETE FROM usuarios WHERE id = $userData->userID";
+
+        try
+        {
+            $this->conn->exec($query);
+            return true;
+        }
+        catch(Exception $e)
+        {
+            throw new Exception($e->getMessage());
+        }
+    }
+
+    public function editInfo($userData)
+    {
+        $queryCheck = "SELECT id, nome, senha, username, admin FROM usuarios WHERE id= $userData->userID;";
+        $queryResult = $this->conn->prepare($queryCheck);
+        $queryResult->execute();
+        $resultQuery = $queryResult->fetchAll(PDO::FETCH_ASSOC);
+
+        return $resultQuery;    
+    }
 }
